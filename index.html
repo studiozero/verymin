@@ -1,0 +1,88 @@
+<html>
+<head>
+    <script src="https://aframe.io/releases/0.4.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/v2.1.1/dist/aframe-extras.loaders.min.js"></script>
+    <script src="tone.min.js"></script>
+
+</head>
+<body>
+
+<a-scene>
+    <a-assets>
+        <a-asset-item id="box" src="box.bake.ply"></a-asset-item>
+    </a-assets>
+
+    <a-entity position="1.4 0 0" ply-model="src: #box" rotation="-90 0 -90" scale="0.01 0.01 0.01"></a-entity>
+
+
+
+    <a-plane  position="0 0 0" height="3" width="3" color="#CFC599" rotation="-90 0 0" position="0 0 0"></a-plane>
+    <a-entity id="hand" vive-controls="hand: right">
+    </a-entity>
+
+    <a-entity id="wand" vive-controls="hand: left">
+    </a-entity>
+
+</a-scene>
+
+<script id="ToneCode" type="text/javascript">
+
+    var animationFrame;
+	var osc = new Tone.Oscillator({
+		"frequency" : 440,
+		"volume" : -5,
+        "type" : "sine"
+	}).toMaster();
+
+
+	var tweak = 1600;
+
+	var setPitch = function (y) {
+		if(y > 0.6 && y < 1.2) {
+            osc.set('frequency', ((y-0.6) * tweak) + 180);
+        }
+	};
+
+	var hand;
+    hand = document.querySelector('#hand');
+	hand.addEventListener('triggerdown', function (e) {
+		e.preventDefault();
+		console.warn('BUTTON', JSON.stringify(pos));
+    })
+
+	var wand = document.querySelector('#wand');
+	var noise = false;
+
+	wand.addEventListener('triggerdown', function (e) {
+		e.preventDefault();
+		if(noise) {
+			osc.stop();
+			window.cancelAnimationFrame(animationFrame);
+        } else {
+			osc.start();
+			updatePitch();
+        }
+        noise = !noise;
+    });
+
+	var updatePitch = function () {
+		var pos = hand.getAttribute('position');
+		setPitch(pos.y);
+
+		animationFrame = window.requestAnimationFrame(updatePitch);
+	};
+
+
+//	var move = function (e) {
+//		var f = 1;
+//		osc.set('frequency', e.clientX * f);
+//		osc.set('volume', e.clientY * f);
+//    };
+//    body.onmousemove = move;
+//    body.onmouseenter = function () {console.log('start');  osc.start(); Tone.Master.volume.rampTo(0, 0.05);    }
+//    body.onmouseleave = function () {console.log('stop');   osc.stop();     }
+</script>
+
+
+<body>
+</html>
