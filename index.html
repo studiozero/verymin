@@ -3,8 +3,9 @@
 <head>
     <title>VeRymin</title>
     <meta charset="utf-8"/>
-    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/aframevr/aframe/e5771a8/dist/aframe-master.min.js"></script>
     <script src="https://rawgit.com/donmccurdy/aframe-extras/v2.1.1/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
     <script src="tone.min.js"></script>
 
 </head>
@@ -18,14 +19,16 @@
 
     <a-entity position="-1 0 0" ply-model="src: #box" rotation="-90 0 90" scale="0.01 0.01 0.01"></a-entity>
 
-
-
-    <a-plane  position="0 0 0" height="3" width="3" material="src: #floor; repeat: 20 20" color="#CFC599" rotation="-90 0 0" position="0 0 0"></a-plane>
+    <a-plane height="3" width="3" material="src: #floor; repeat: 20 20" color="#CFC599" rotation="-90 0 0" position="0 0 0"></a-plane>
     <a-entity id="hand" vive-controls="hand: right">
     </a-entity>
 
-    <a-entity id="wand" vive-controls="hand: left">
+    <a-entity id="wand" teleport-controls vive-controls="hand: left">
     </a-entity>
+
+		<a-entity position="0 0 0">
+			<a-camera userheight="1.6"></a-camera>
+		</a-entity>
 
 </a-scene>
 
